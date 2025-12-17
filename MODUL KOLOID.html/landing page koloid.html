@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Kimia: Sistem Koloid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            color: white;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+        }
+
+        .hero-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102,126,234,0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, -20px) rotate(180deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .hero-image {
+            text-align: center;
+            margin: 30px 0;
+            font-size: 5em;
+        }
+
+        .hero-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .bubble {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 10px;
+            animation: bubble 3s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) { background: rgba(255, 182, 193, 0.6); animation-delay: 0s; }
+        .bubble:nth-child(2) { background: rgba(173, 216, 230, 0.6); animation-delay: 0.5s; }
+        .bubble:nth-child(3) { background: rgba(255, 255, 153, 0.6); animation-delay: 1s; }
+        .bubble:nth-child(4) { background: rgba(255, 218, 185, 0.6); animation-delay: 1.5s; }
+
+        @keyframes bubble {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.1); }
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .menu-item:nth-child(1) {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+
+        .menu-item:nth-child(2) {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+
+        .menu-item:nth-child(3) {
+            background: linear-gradient(135deg, #ffd3a5 0%, #fd6585 100%);
+        }
+
+        .menu-item:nth-child(4) {
+            background: linear-gradient(135deg, #c1dfc4 0%, #deecdd 100%);
+        }
+
+        .menu-item:nth-child(5) {
+            background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        .menu-item:nth-child(6) {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+        }
+
+        .menu-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .menu-item h3 {
+            color: #333;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .menu-item p {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .hero-content h2 {
+                font-size: 1.5em;
+            }
+
+            .hero-text {
+                font-size: 1em;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🧪 MODUL KIMIA: SISTEM KOLOID 🧪</h1>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-card">
+            <div class="hero-content">
+                <h2>✨ Tahukah Kamu? ✨</h2>
+                <div class="hero-image">
+                    🥛 ☁️ 🍦 🌫️
+                </div>
+                <p class="hero-text">
+                    <strong>Susu yang kamu minum setiap pagi, awan di langit, es krim favoritmu, 
+                    bahkan kabut di pagi hari...</strong> Semua itu adalah contoh sistem koloid yang ada di sekitar kita!
+                </p>
+                <div style="text-align: center; margin-top: 30px;">
+                    <span class="bubble"></span>
+                    <span class="bubble"></span>
+                    <span class="bubble"></span>
+                    <span class="bubble"></span>
+                </div>
+                <p class="hero-text" style="margin-top: 20px; font-size: 1em; color: #667eea;">
+                    Sistem koloid adalah campuran heterogen yang partikelnya tersebar merata 
+                    dengan ukuran antara larutan sejati dan suspensi. Yuk, pelajari lebih dalam!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="menu-grid">
+        <div class="menu-item" onclick="location.href='Modul 1.html'">
+            <span class="menu-icon">📚</span>
+            <h3>Pengertian Sistem Koloid</h3>
+            <p>Pelajari definisi dan konsep dasar sistem koloid dalam kehidupan sehari-hari</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='Modul 2.html'">
+            <span class="menu-icon">🔬</span>
+            <h3>Jenis-jenis Koloid</h3>
+            <p>Kenali berbagai macam koloid seperti sol, emulsi, aerosol, dan busa</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='Modul 3.html'">
+            <span class="menu-icon">⚡</span>
+            <h3>Sifat Koloid</h3>
+            <p>Eksplorasi efek Tyndall, gerak Brown, elektroforesis, dan sifat lainnya</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='Modul 4.html'">
+            <span class="menu-icon">🧫</span>
+            <h3>Pembuatan Koloid</h3>
+            <p>Pahami cara kondensasi dan dispersi dalam membuat sistem koloid</p>
+        </div>
+
+        <div class="menu-item" onclick="location.href='Modul 5.html'">
+            <span class="menu-icon">🎯</span>
+            <h3>Quiz Interaktif dan Game Asyikkkk</h3>
+            <p>Uji pemahamanmu dengan 10 soal pilihan ganda yang menarik!</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Modul Pembelajaran Kimia | Sistem Koloid untuk Siswa Indonesia</p>
+    </footer>
+
+    <script>
+        // Menambahkan efek klik pada kartu menu
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+    </script>
+</body>
+</html>

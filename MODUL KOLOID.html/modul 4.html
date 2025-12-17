@@ -1,0 +1,1980 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 4: Pembuatan Sistem Koloid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E0C3FC 0%, #8EC5FC 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 240, 245, 0.95));
+            border-radius: 30px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-80px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #C3B1E1, #A8D8EA, #FFB6D9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            font-weight: 900;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+
+        .intro-section {
+            background: linear-gradient(135deg, #FFF5F7, #F0F4FF);
+            border-radius: 30px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(195, 177, 225, 0.3);
+        }
+
+        .intro-title {
+            font-size: 2.5em;
+            color: #8B7AB8;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .demo-container {
+            background: linear-gradient(135deg, #E8F5E9, #E3F2FD, #FCE4EC);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px 0;
+            border: 3px solid #C3B1E1;
+        }
+
+        .story-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .story-box p {
+            font-size: 1.4em;
+            line-height: 2;
+            color: #555;
+            text-align: center;
+        }
+
+        .particle-demo {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .demo-box {
+            text-align: center;
+            margin: 20px;
+        }
+
+        .demo-label {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #8B7AB8;
+            margin-bottom: 20px;
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .particle-container {
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 4px solid #C3B1E1;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(139, 122, 184, 0.2);
+        }
+
+        .micro-particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(10px, -15px); }
+            50% { transform: translate(-10px, 10px); }
+            75% { transform: translate(15px, 5px); }
+        }
+
+        .size-label {
+            margin-top: 15px;
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #555;
+            background: #FFF9C4;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .arrow-flow {
+            font-size: 4em;
+            color: #FF94C3;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 35px;
+            margin-top: 40px;
+        }
+
+        .menu-card {
+            background: linear-gradient(135deg, #FFE5F1, #E8E4F3);
+            border-radius: 25px;
+            padding: 50px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px rgba(139, 122, 184, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-20px) scale(1.08);
+            box-shadow: 0 25px 50px rgba(139, 122, 184, 0.35);
+        }
+
+        .menu-card.kondensasi {
+            background: linear-gradient(135deg, #FFB6D9 30%, #C3B1E1 100%);
+            color: white;
+        }
+
+        .menu-card.dispersi {
+            background: linear-gradient(135deg, #A8D8EA 30%, #A8E6CF 100%);
+            color: white;
+        }
+
+        .menu-icon {
+            font-size: 7em;
+            margin-bottom: 25px;
+            animation: bounce 2.5s infinite;
+            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-25px); }
+        }
+
+        .menu-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-desc {
+            font-size: 1.3em;
+            line-height: 1.8;
+            opacity: 0.95;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #FAFAFA, #FFF5F7);
+            margin: 40px auto;
+            padding: 50px;
+            max-width: 1300px;
+            border-radius: 30px;
+            position: relative;
+            animation: slideUp 0.6s;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(80px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            font-size: 2.8em;
+            cursor: pointer;
+            color: #8B7AB8;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: #FF94C3;
+        }
+
+        .modal-title {
+            font-size: 2.8em;
+            color: #8B7AB8;
+            margin-bottom: 35px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        .submenu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .submenu-card {
+            background: linear-gradient(135deg, #C3B1E1, #A8D8EA);
+            color: white;
+            padding: 35px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .submenu-card:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+        }
+
+        .submenu-icon {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+        }
+
+        .submenu-title {
+            font-size: 1.6em;
+            font-weight: 800;
+        }
+
+        .content-section {
+            display: none;
+            background: linear-gradient(135deg, #FFF5F7, #F0F4FF);
+            padding: 40px;
+            border-radius: 25px;
+            margin-top: 30px;
+            border: 3px solid #C3B1E1;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .method-card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 25px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .method-title {
+            font-size: 2.2em;
+            color: #8B7AB8;
+            margin-bottom: 25px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .visual-box {
+            background: linear-gradient(135deg, #E8F5E9, #E3F2FD);
+            border-radius: 20px;
+            padding: 35px;
+            margin: 25px 0;
+            border: 3px solid #A8D8EA;
+        }
+
+        .animation-stages {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .stage {
+            text-align: center;
+            margin: 15px;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .stage-box {
+            width: 220px;
+            height: 220px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 4px solid #C3B1E1;
+            border-radius: 20px;
+            margin: 0 auto 15px;
+            position: relative;
+            overflow: visible;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .stage-label {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: #555;
+            background: #FFF9C4;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .particle-small {
+            position: absolute;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .particle-merge {
+            animation: mergeMotion 3s ease-in-out infinite;
+        }
+
+        @keyframes mergeMotion {
+            0% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(var(--tx), var(--ty)) scale(1.1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(calc(var(--tx) * 0.6), calc(var(--ty) * 0.6)) scale(1.4);
+                opacity: 0.9;
+            }
+        }
+
+        .particle-break {
+            animation: breakMotion 3s ease-in-out infinite;
+        }
+
+        @keyframes breakMotion {
+            0% { 
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            40% {
+                transform: scale(1.15) rotate(90deg);
+                opacity: 0.8;
+            }
+            80% {
+                transform: scale(0.4) rotate(270deg);
+                opacity: 0.4;
+            }
+            100% {
+                transform: scale(0.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .fragment {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: fragmentFly 2.5s ease-out infinite;
+        }
+
+        @keyframes fragmentFly {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            30% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(var(--fx), var(--fy)) scale(0.7);
+                opacity: 0.6;
+            }
+        }
+
+        .chemical-eq {
+            font-size: 1.6em;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #333;
+            background: #F5F5F5;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            border: 3px solid #C3B1E1;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #A8E6CF, #A8D8EA);
+            color: white;
+            padding: 25px;
+            border-radius: 18px;
+            margin: 20px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-box h4 {
+            font-size: 1.8em;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .info-box p {
+            font-size: 1.3em;
+            line-height: 1.9;
+        }
+
+        .note-box {
+            background: linear-gradient(135deg, #FFE5F1, #FFF9C4);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 6px solid #FF94C3;
+        }
+
+        .note-box strong {
+            color: #C3406C;
+            font-size: 1.2em;
+        }
+
+        .note-box p {
+            font-size: 1.2em;
+            line-height: 2;
+            color: #555;
+        }
+
+        .btn-animate {
+            background: linear-gradient(135deg, #C3B1E1, #FFB6D9);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 35px;
+            font-size: 1.4em;
+            cursor: pointer;
+            transition: all 0.4s;
+            font-weight: 800;
+            box-shadow: 0 10px 25px rgba(195, 177, 225, 0.4);
+            margin: 15px 8px;
+        }
+
+        .btn-animate:hover {
+            transform: scale(1.12);
+            box-shadow: 0 15px 35px rgba(195, 177, 225, 0.6);
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #8B7AB8, #A8D8EA);
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            border-radius: 35px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: all 0.4s;
+            font-weight: 800;
+            box-shadow: 0 10px 25px rgba(139, 122, 184, 0.4);
+            margin-top: 25px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.12);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .legend-circle {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 3px solid #555;
+        }
+
+        .legend-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; }
+            .menu-grid { grid-template-columns: 1fr; }
+            .stage-box { width: 180px; height: 180px; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 MODUL 4: PEMBUATAN SISTEM KOLOID 🧪</h1>
+            <p class="subtitle">Visualisasi Interaktif Pembentukan Koloid hingga Partikel Terkecil</p>
+        </header>
+<button class="back-button" onclick="location.href='landing page koloid.html'">
+    🏠 Kembali ke Beranda
+</button>
+        <div class="intro-section">
+            <h2 class="intro-title">🌸 Peristiwa Sehari-hari: Membuat Susu Kental Manis 🌸</h2>
+            
+            <div class="story-box">
+                <p>🥛 Pernahkah kamu membuat susu kental manis di rumah? Ketika susu segar dipanaskan dengan gula, molekul-molekul kecil (gula dan protein) <strong>bergabung</strong> membentuk partikel koloid yang lebih besar. Ini adalah proses <strong style="color: #C3B1E1;">KONDENSASI</strong>! Sebaliknya, saat kita menghaluskan es batu menjadi es serut dengan mesin, partikel es besar <strong>dipecah</strong> menjadi partikel kecil - ini adalah <strong style="color: #A8D8EA;">DISPERSI</strong>! ✨</p>
+            </div>
+
+            <div class="demo-container">
+                <h3 style="text-align: center; font-size: 2em; color: #8B7AB8; margin-bottom: 25px;">🔬 MEMAHAMI UKURAN PARTIKEL 🔬</h3>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #FFB6D9; width: 15px; height: 15px;"></div>
+                        <div class="legend-text">Larutan (< 1 nm)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #A8D8EA; width: 28px; height: 28px;"></div>
+                        <div class="legend-text">Koloid (1-100 nm)</div>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-circle" style="background: #C3B1E1; width: 42px; height: 42px; border-radius: 25%;"></div>
+                        <div class="legend-text">Suspensi (> 100 nm)</div>
+                    </div>
+                </div>
+
+                <div class="particle-demo">
+                    <div class="demo-box">
+                        <div class="demo-label">LARUTAN SEJATI</div>
+                        <div class="particle-container" id="solutionDemo"></div>
+                        <div class="size-label">< 1 nm<br>Tidak terlihat<br>Jernih</div>
+                    </div>
+
+                    <div class="arrow-flow">⚗️→</div>
+
+                    <div class="demo-box">
+                        <div class="demo-label">KOLOID</div>
+                        <div class="particle-container" id="colloidDemo"></div>
+                        <div class="size-label">1-100 nm<br>Efek Tyndall<br>Keruh</div>
+                    </div>
+
+                    <div class="arrow-flow">🔨→</div><div class="demo-box">
+                        <div class="demo-label">SUSPENSI</div>
+                        <div class="particle-container" id="suspensionDemo"></div>
+                        <div class="size-label">> 100 nm<br>Terlihat<br>Mengendap</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note-box">
+                <p><strong>📌 PENTING!</strong> Koloid dibuat dengan 2 cara utama:<br><br>
+                <strong>1. KONDENSASI (⚗️):</strong> Partikel KECIL (larutan) → BERGABUNG → Partikel SEDANG (koloid)<br><br>
+                <strong>2. DISPERSI (🔨):</strong> Partikel BESAR (suspensi) → DIPECAH → Partikel SEDANG (koloid)</p>
+            </div>
+        </div>
+
+        <div class="menu-grid">
+            <div class="menu-card kondensasi" onclick="openKondensasi()">
+                <div class="menu-icon">⚗️</div>
+                <div class="menu-title">CARA KONDENSASI</div>
+                <div class="menu-desc">Kecil + Kecil = Sedang<br>Molekul bergabung → Koloid<br>2 Metode: Kimia & Fisika</div>
+            </div>
+
+            <div class="menu-card dispersi" onclick="openDispersi()">
+                <div class="menu-icon">🔨</div>
+                <div class="menu-title">CARA DISPERSI</div>
+                <div class="menu-desc">Besar → Pecah = Sedang<br>Partikel dipecah → Koloid<br>4 Metode: Bredig, Mekanik, Peptisasi, Homogenisasi</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Kondensasi -->
+    <div id="kondensasiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeKondensasi()">&times;</span>
+            <h2 class="modal-title">⚗️ CARA KONDENSASI ⚗️</h2>
+            
+            <div class="note-box">
+                <p><strong>💡 KONSEP DASAR:</strong> Partikel-partikel sangat kecil (< 1 nm) dari larutan sejati <strong>BERGABUNG</strong> membentuk partikel koloid berukuran sedang (1-100 nm)</p>
+            </div>
+
+            <div class="submenu-grid">
+                <div class="submenu-card" onclick="showContent('kimia')">
+                    <div class="submenu-icon">🧪</div>
+                    <div class="submenu-title">CARA KIMIA</div>
+                    <p style="margin-top: 10px; font-size: 1.1em;">4 Reaksi</p>
+                </div>
+                <div class="submenu-card" onclick="showContent('fisika')">
+                    <div class="submenu-icon">❄️</div>
+                    <div class="submenu-title">CARA FISIKA</div>
+                    <p style="margin-top: 10px; font-size: 1.1em;">3 Proses</p>
+                </div>
+            </div>
+
+            <!-- CARA KIMIA -->
+            <div id="kimia" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">🧪 CARA KIMIA 🧪</h3>
+
+                <!-- 1. Reaksi Pengendapan -->
+                <div class="method-card">
+                    <div class="method-title">1️⃣ REAKSI PENGENDAPAN</div>
+                    
+                    <button class="btn-animate" onclick="animatePengendapan()">▶️ MULAI ANIMASI PARTIKEL</button>
+                    
+                    <div class="chemical-eq">
+                        AgNO₃(aq) + KCl(aq) → AgCl(koloid) + KNO₃(aq)
+                    </div>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="pengendapan1">
+                                    <div style="position: absolute; top: 30%; left: 25%; font-size: 2em; color: #FF6B9D; font-weight: bold;">Ag⁺</div>
+                                    <div style="position: absolute; top: 60%; left: 70%; font-size: 2em; color: #4ECDC4; font-weight: bold;">NO₃⁻</div>
+                                    <div style="position: absolute; top: 45%; left: 50%; font-size: 1.5em; color: #999;">💧</div>
+                                </div>
+                                <div class="stage-label">LARUTAN 1<br>AgNO₃</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">+</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pengendapan2">
+                                    <div style="position: absolute; top: 30%; left: 25%; font-size: 2em; color: #9D84B7; font-weight: bold;">K⁺</div>
+                                    <div style="position: absolute; top: 60%; left: 70%; font-size: 2em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                    <div style="position: absolute; top: 45%; left: 50%; font-size: 1.5em; color: #999;">💧</div>
+                                </div>
+                                <div class="stage-label">LARUTAN 2<br>KCl</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pengendapan3"></div>
+                                <div class="stage-label">SOL AgCl<br>(KOLOID PUTIH)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Ion Ag⁺ (pink) dari AgNO₃ dan ion Cl⁻ (hijau) dari KCl bertemu dalam larutan<br><br>
+                        <strong>LANGKAH 2:</strong> Ion Ag⁺ dan Cl⁻ saling tarik-menarik (gaya elektrostatis)<br><br>
+                        <strong>LANGKAH 3:</strong> Terbentuk kluster kecil AgCl berukuran 1-100 nm (KOLOID)<br><br>
+                        <strong>LANGKAH 4:</strong> Partikel koloid AgCl tersuspensi stabil dalam air → warna putih susu</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>Film fotografi</strong> - AgCl sensitif cahaya untuk fotografi analog<br>
+                        • <strong>Awan</strong> - H₂O koloid dari kondensasi uap air<br>
+                        • <strong>Sol belerang</strong> - untuk obat kulit (antijamur)</p>
+                    </div>
+                </div>
+
+                <!-- 2. Reaksi Hidrolisis -->
+                <div class="method-card">
+                    <div class="method-title">2️⃣ REAKSI HIDROLISIS</div>
+                    
+                    <button class="btn-animate" onclick="animateHidrolisis()">▶️ MULAI ANIMASI PARTIKEL</button>
+                    
+                    <div class="chemical-eq">
+                        FeCl₃(aq) + 3H₂O(l) → Fe(OH)₃(koloid) + 3HCl(aq)
+                    </div>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="hidrolisis1">
+                                    <div style="position: absolute; top: 30%; left: 50%; transform: translateX(-50%); font-size: 2.2em; color: #E17055; font-weight: bold;">Fe³⁺</div>
+                                    <div style="position: absolute; top: 60%; left: 25%; font-size: 1.6em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                    <div style="position: absolute; top: 60%; left: 50%; font-size: 1.6em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                    <div style="position: absolute; top: 60%; left: 75%; font-size: 1.6em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                </div>
+                                <div class="stage-label">FeCl₃<br>(Besi(III) klorida)</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">+</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="hidrolisis2">
+                                    <div style="position: absolute; top: 25%; left: 50%; transform: translateX(-50%); font-size: 2.5em; color: #4ECDC4; font-weight: bold;">H₂O</div>
+                                    <div style="position: absolute; top: 50%; left: 30%; font-size: 2.5em; color: #4ECDC4; font-weight: bold;">H₂O</div>
+                                    <div style="position: absolute; top: 50%; left: 70%; font-size: 2.5em; color: #4ECDC4; font-weight: bold;">H₂O</div>
+                                    <div style="position: absolute; top: 75%; left: 50%; transform: translateX(-50%); font-size: 1.8em; color: #999;">AIR</div>
+                                </div>
+                                <div class="stage-label">AIR (H₂O)</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="hidrolisis3"></div>
+                                <div class="stage-label">SOL Fe(OH)₃<br>(KOLOID COKLAT)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> FeCl₃ larut dalam air → ion Fe³⁺ (oranye) dan 3 ion Cl⁻ (hijau)<br><br>
+                        <strong>LANGKAH 2:</strong> Ion Fe³⁺ bereaksi dengan molekul H₂O (biru) - proses hidrolisis<br><br>
+                        <strong>LANGKAH 3:</strong> Terbentuk Fe(OH)₃ berukuran koloid (1-100 nm)<br><br>
+                        <strong>LANGKAH 4:</strong> Larutan berubah warna menjadi coklat kemerahan → koloid Fe(OH)₃</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>Tawas (Al₂(SO₄)₃)</strong> - menjernihkan air PDAM dengan membentuk sol Al(OH)₃<br>
+                        • <strong>Pengolahan limbah</strong> - Fe(OH)₃ mengikat kotoran dalam air<br>
+                        • <strong>Sabun</strong> - hidrolisis lemak/minyak menghasilkan koloid sabun</p>
+                    </div>
+                </div>
+
+                <!-- 3. Reaksi Pemindahan -->
+                <div class="method-card">
+                    <div class="method-title">3️⃣ REAKSI PEMINDAHAN (Pertukaran Ion)</div>
+                    
+                    <button class="btn-animate" onclick="animatePemindahan()">▶️ MULAI ANIMASI PARTIKEL</button>
+                    
+                    <div class="chemical-eq">
+                        2H₂S(aq) + SO₂(aq) → 2H₂O(l) + 3S(koloid)
+                    </div>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="pemindahan1">
+                                    <div style="position: absolute; top: 30%; left: 30%; font-size: 2em; color: #9D84B7; font-weight: bold;">H₂S</div>
+                                    <div style="position: absolute; top: 60%; left: 65%; font-size: 2em; color: #9D84B7; font-weight: bold;">H₂S</div>
+                                </div>
+                                <div class="stage-label">Hidrogen Sulfida</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">+</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pemindahan2">
+                                    <div style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2em; color: #FFB6D9; font-weight: bold;">SO₂</div>
+                                </div>
+                                <div class="stage-label">Sulfur Dioksida</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pemindahan3"></div>
+                                <div class="stage-label">SOL BELERANG<br>(KOLOID KUNING)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Molekul H₂S (ungu) dan SO₂ (pink) bereaksi<br><br>
+                        <strong>LANGKAH 2:</strong> Terjadi pertukaran atom - atom S (belerang) dilepaskan<br><br>
+                        <strong>LANGKAH 3:</strong> Atom-atom S bergabung membentuk partikel koloid (1-100 nm)<br><br>
+                        <strong>HASIL:</strong> Sol belerang berwarna kuning tersuspensi dalam air</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>Sol belerang</strong> - untuk industri karet (vulkanisasi)<br>
+                        • <strong>Sol emas</strong> - untuk pewarna kaca ruby (merah)<br>
+                        • <strong>Sol arsen sulfida</strong> - untuk cat kuning</p>
+                    </div>
+                </div>
+
+                <!-- 4. Reaksi Redoks -->
+                <div class="method-card">
+                    <div class="method-title">4️⃣ REAKSI REDOKS (Reduksi-Oksidasi)</div>
+                    
+                    <button class="btn-animate" onclick="animateRedoks()">▶️ MULAI ANIMASI PARTIKEL</button>
+                    
+                    <div class="chemical-eq">
+                        2H₂S(g) + O₂(g) → 2H₂O(l) + 2S(koloid)
+                    </div>
+                    <div class="chemical-eq">
+                        2AuCl₃(aq) + 3HCHO(aq) → 2Au(koloid) + 6HCl + 3CO
+                    </div>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="redoks1">
+                                    <div style="position: absolute; top: 35%; left: 30%; font-size: 2em; color: #9D84B7; font-weight: bold;">H₂S</div>
+                                    <div style="position: absolute; top: 60%; left: 65%; font-size: 2em; color: #4ECDC4; font-weight: bold;">O₂</div>
+                                </div>
+                                <div class="stage-label">Reaktan</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">⚡</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="redoks2">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 3em;">🔥</div>
+                                </div>
+                                <div class="stage-label">Transfer Elektron</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="redoks3"></div>
+                                <div class="stage-label">SOL BELERANG<br>(KOLOID KUNING)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> H₂S (pereduksi) bereaksi dengan O₂ (pengoksidasi)<br><br>
+                        <strong>LANGKAH 2:</strong> Terjadi transfer elektron - H₂S dioksidasi, O₂ direduksi<br><br>
+                        <strong>LANGKAH 3:</strong> Atom S yang dibebaskan bergabung membentuk partikel koloid<br><br>
+                        <strong>HASIL:</strong> Partikel S berukuran 1-100 nm (koloid kuning)</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>Sol emas (Au)</strong> - untuk nanopartikel medis & perhiasan<br>
+                        • <strong>Sol belerang</strong> - dari pembakaran tak sempurna<br>
+                        • <strong>Sol perak (Ag)</strong> - untuk antibakteri dalam tekstil</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+
+            <!-- CARA FISIKA -->
+            <div id="fisika" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">❄️ CARA FISIKA ❄️</h3>
+
+                <div class="note-box">
+                    <p><strong>💡 KONSEP:</strong> Perubahan FISIK tanpa reaksi kimia - hanya perubahan suhu atau medium untuk mengumpulkan partikel kecil menjadi koloid</p>
+                </div>
+
+                <!-- 1. Pengembunan Uap -->
+                <div class="method-card">
+                    <div class="method-title">1️⃣ PENGEMBUNAN UAP (Kondensasi Uap)</div>
+                    
+                    <button class="btn-animate" onclick="animatePengembunan()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="pengembunan1" style="background: linear-gradient(to bottom, #FFB6D9 0%, #FF94C3 100%);"></div>
+                                <div class="stage-label">UAP PANAS<br>Molekul terpisah jauh</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #4ECDC4;">❄️</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pengembunan2" style="background: linear-gradient(to bottom, #A8D8EA 0%, #8EC5FC 100%);"></div>
+                                <div class="stage-label">PENDINGINAN<br>Suhu turun</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pengembunan3"></div>
+                                <div class="stage-label">KOLOID<br>Tetesan kecil</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Uap panas - molekul bergerak cepat dan berjauhan (pink)<br><br>
+                        <strong>LANGKAH 2:</strong> Suhu diturunkan - molekul melambat (biru)<br><br>
+                        <strong>LANGKAH 3:</strong> Molekul uap bergabung membentuk tetesan kecil 1-100 nm<br><br>
+                        <strong>HASIL:</strong> Partikel koloid tersuspensi di udara</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>KABUT PAGI</strong> - uap air mengembun di udara dingin pagi hari<br>
+                        • <strong>AWAN</strong> - uap air di atmosfer mengembun membentuk tetesan koloid<br>
+                        • <strong>ASAP ROKOK</strong> - partikel tar & karbon mengembun di udara<br>
+                        • <strong>ASAP KNALPOT</strong> - partikel hasil pembakaran mengembun</p>
+                    </div>
+                </div>
+
+                <!-- 2. Pendinginan -->
+                <div class="method-card">
+                    <div class="method-title">2️⃣ PENDINGINAN LARUTAN</div>
+                    
+                    <button class="btn-animate" onclick="animatePendinginan()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="pendinginan1" style="background: linear-gradient(to bottom, #FFB6D9 0%, #FFE5F1 100%);"></div>
+                                <div class="stage-label">LARUTAN PANAS<br>Molekul terlarut</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #4ECDC4;">🧊</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pendinginan2" style="background: linear-gradient(to bottom, #A8D8EA 0%, #C3E4F5 100%);"></div>
+                                <div class="stage-label">DIDINGINKAN<br>Molekul berkumpul</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="pendinginan3"></div>
+                                <div class="stage-label">SOL KOLOID<br>Partikel sedang</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Larutan panas - molekul terlarut sempurna (pink)<br><br>
+                        <strong>LANGKAH 2:</strong> Suhu diturunkan perlahan - molekul mulai berkumpul (biru)<br><br>
+                        <strong>LANGKAH 3:</strong> Molekul bergabung membentuk partikel koloid 1-100 nm<br><br>
+                        <strong>HASIL:</strong> Sol koloid yang stabil</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>ES KRIM</strong> - kristal es halus membentuk tekstur lembut koloid<br>
+                        • <strong>SOL BELERANG</strong> - larutan belerang panas yang didinginkan<br>
+                        • <strong>JELI/AGAR-AGAR</strong> - gelatin didinginkan membentuk gel<br>
+                        • <strong>MENTEGA</strong> - lemak susu didinginkan dan dikocok</p>
+                    </div>
+                </div>
+
+                <!-- 3. Penggantian Pelarut -->
+                <div class="method-card">
+                    <div class="method-title">3️⃣ PENGGANTIAN PELARUT</div>
+                    
+                    <button class="btn-animate" onclick="animatePenggantian()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="penggantian1">
+                                    <div style="position: absolute; top: 30%; left: 30%; font-size: 1.8em; color: #FFB6D9; font-weight: bold;">Zat</div>
+                                    <div style="position: absolute; top: 60%; left: 65%; font-size: 1.5em; color: #C3B1E1;">Pelarut A</div>
+                                </div>
+                                <div class="stage-label">Larutan dalam<br>Pelarut A (alkohol)</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">+</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="penggantian2">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.5em; color: #4ECDC4; font-weight: bold;">H₂O</div>
+                                </div>
+                                <div class="stage-label">Pelarut B<br>(air)</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="penggantian3"></div>
+                                <div class="stage-label">SOL KOLOID<br>Zat terdispersi</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Zat terlarut sempurna dalam pelarut A (alkohol) - pink<br><br>
+                        <strong>LANGKAH 2:</strong> Ditambahkan pelarut B (air) yang kelarutannya lebih rendah - biru<br><br>
+                        <strong>LANGKAH 3:</strong> Zat tidak larut sempurna → membentuk partikel koloid 1-100 nm<br><br>
+                        <strong>HASIL:</strong> Partikel koloid tersuspensi dalam campuran pelarut</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>SOL BELERANG</strong> - larutan belerang dalam alkohol + air<br>
+                        • <strong>SABUN TRANSPARAN</strong> - larutan sabun dalam etanol + air<br>
+                        • <strong>SOL KALSIUM ASETAT</strong> - larutan dalam alkohol + air<br>
+                        • <strong>KOLOID PROTEIN</strong> - protein dalam pelarut organik + air</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Dispersi -->
+    <div id="dispersiModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeDispersi()">&times;</span>
+            <h2 class="modal-title">🔨 CARA DISPERSI 🔨</h2>
+            
+            <div class="note-box">
+                <p><strong>💡 KONSEP DASAR:</strong> Partikel-partikel besar (> 100 nm) dari suspensi kasar <strong>DIPECAH</strong> menjadi partikel koloid berukuran sedang (1-100 nm)</p>
+            </div>
+
+            <div class="submenu-grid">
+                <div class="submenu-card" onclick="showContent('bredig')">
+                    <div class="submenu-icon">⚡</div>
+                    <div class="submenu-title">BUSUR BREDIG</div>
+                </div>
+                <div class="submenu-card" onclick="showContent('mekanik')">
+                    <div class="submenu-icon">⚙️</div>
+                    <div class="submenu-title">CARA MEKANIK</div>
+                </div>
+                <div class="submenu-card" onclick="showContent('peptisasi')">
+                    <div class="submenu-icon">💧</div>
+                    <div class="submenu-title">PEPTISASI</div>
+                </div>
+                <div class="submenu-card" onclick="showContent('homogenisasi')">
+                    <div class="submenu-icon">🌪️</div>
+                    <div class="submenu-title">HOMOGENISASI</div>
+                </div>
+            </div>
+
+            <!-- BUSUR BREDIG -->
+            <div id="bredig" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">⚡ CARA BUSUR BREDIG ⚡</h3>
+
+                <div class="method-card">
+                    <div class="method-title">Loncatan Listrik Tegangan Tinggi</div>
+                    
+                    <button class="btn-animate" onclick="animateBredig()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="bredig1" style="background: linear-gradient(135deg, #2C3E50, #34495E);">
+                                    <div style="position: absolute; top: 15%; left: 25%; width: 12px; height: 150px; background: linear-gradient(180deg, #FFD700, #FFA500); border-radius: 6px;"></div>
+                                    <div style="position: absolute; top: 15%; right: 25%; width: 12px; height: 150px; background: linear-gradient(180deg, #FFD700, #FFA500); border-radius: 6px;"></div>
+                                    <div style="position: absolute; bottom: 15%; left: 0; right: 0; text-align: center; color: #A8D8EA; font-size: 1.4em; font-weight: bold;">AIR</div>
+                                </div>
+                                <div class="stage-label">2 ELEKTRODA LOGAM<br>dalam air</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FFD700;">⚡</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="bredig2" style="background: linear-gradient(135deg, #2C3E50, #34495E);"></div>
+                                <div class="stage-label">LONCATAN LISTRIK<br>Logam menguap</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="bredig3"></div>
+                                <div class="stage-label">SOL LOGAM<br>(Au, Ag, Pt)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Dua elektroda logam (emas kuning) dicelupkan dalam air<br><br>
+                        <strong>LANGKAH 2:</strong> Dialiri arus listrik SANGAT TINGGI → busur listrik meloncat<br><br>
+                        <strong>LANGKAH 3:</strong> Logam menguap → atom-atom logam lepas dari elektroda<br><br>
+                        <strong>LANGKAH 4:</strong> Uap logam mengembun dalam air → partikel koloid 1-100 nm<br><br>
+                        <strong>HASIL:</strong> Sol logam (emas merah, perak kuning)</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh Pembuatan:</h4>
+                        <p>• <strong>Sol emas (Au)</strong> - untuk pewarna kaca ruby (merah) & nanomedis<br>
+                        • <strong>Sol perak (Ag)</strong> - untuk antibakteri & sensor nano<br>
+                        • <strong>Sol platinum (Pt)</strong> - untuk katalis reaksi kimia<br>
+                        • <strong>Sol tembaga (Cu)</strong> - untuk konduktor nano</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+
+            <!-- CARA MEKANIK -->
+            <div id="mekanik" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">⚙️ CARA MEKANIK ⚙️</h3>
+
+                <div class="method-card"><div class="method-title">Penggilingan (Ball Mill / Colloid Mill)</div>
+                    
+                    <button class="btn-animate" onclick="animateMekanik()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="mekanik1">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90px; height: 90px; background: #C3B1E1; border-radius: 20%; box-shadow: 0 8px 20px rgba(0,0,0,0.3);"></div>
+                                </div>
+                                <div class="stage-label">PARTIKEL BESAR<br>(> 100 nm)<br>Belerang padat</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">⚙️</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="mekanik2">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5em; animation: spin 2s linear infinite;">⚙️</div>
+                                </div>
+                                <div class="stage-label">PENGGILINGAN<br>Grinding mekanik</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="mekanik3"></div>
+                                <div class="stage-label">PARTIKEL KOLOID<br>(1-100 nm)<br>Sol belerang</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Zat padat kasar (ungu) - partikel besar > 100 nm<br><br>
+                        <strong>LANGKAH 2:</strong> Dimasukkan ke alat penggiling (colloid mill) yang berputar sangat cepat<br><br>
+                        <strong>LANGKAH 3:</strong> Gaya mekanik memecah partikel besar menjadi kecil-kecil<br><br>
+                        <strong>LANGKAH 4:</strong> Terbentuk partikel berukuran 1-100 nm (KOLOID)<br><br>
+                        <strong>HASIL:</strong> Partikel koloid terdispersi dalam medium (air/minyak)</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>SUSU BUBUK</strong> - susu cair dikeringkan lalu digiling sangat halus<br>
+                        • <strong>CAT</strong> - pigmen padat digiling halus dalam pelarut<br>
+                        • <strong>TINTA</strong> - karbon hitam digiling hingga ukuran nano<br>
+                        • <strong>SOL BELERANG</strong> - belerang padat digiling dengan air<br>
+                        • <strong>SABUN CUCI</strong> - bahan padat digiling dan dicampur</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+
+            <!-- PEPTISASI -->
+            <div id="peptisasi" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">💧 CARA PEPTISASI 💧</h3>
+
+                <div class="method-card">
+                    <div class="method-title">Penambahan Elektrolit (Peptisator)</div>
+                    
+                    <button class="btn-animate" onclick="animatePeptisasi()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="chemical-eq">
+                        Al(OH)₃(s) + HCl(aq) → Al(OH)₃(koloid)
+                    </div>
+                    <div class="chemical-eq">
+                        Fe(OH)₃(s) + FeCl₃(aq) → Fe(OH)₃(koloid)
+                    </div>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="peptisasi1">
+                                    <div style="position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 110px; height: 75px; background: #C3B1E1; border-radius: 15px; box-shadow: 0 6px 18px rgba(0,0,0,0.3);"></div>
+                                    <div style="position: absolute; bottom: 10%; left: 50%; transform: translateX(-50%); font-size: 1.2em; font-weight: bold; color: #555;">Endapan</div>
+                                </div>
+                                <div class="stage-label">ENDAPAN KASAR<br>Al(OH)₃ / Fe(OH)₃</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">+</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="peptisasi2">
+                                    <div style="position: absolute; top: 25%; left: 30%; font-size: 2.2em; color: #FF6B9D; font-weight: bold;">H⁺</div>
+                                    <div style="position: absolute; top: 40%; left: 60%; font-size: 2.2em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                    <div style="position: absolute; top: 60%; left: 40%; font-size: 2.2em; color: #FF6B9D; font-weight: bold;">H⁺</div>
+                                    <div style="position: absolute; top: 75%; left: 65%; font-size: 2.2em; color: #A8E6CF; font-weight: bold;">Cl⁻</div>
+                                </div>
+                                <div class="stage-label">PEPTISATOR<br>HCl (elektrolit)</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="peptisasi3"></div>
+                                <div class="stage-label">SOL KOLOID<br>Partikel terdispersi</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Endapan kasar (ungu) - partikel besar menggumpal<br><br>
+                        <strong>LANGKAH 2:</strong> Ditambahkan elektrolit HCl → ion H⁺ (pink) dan Cl⁻ (hijau)<br><br>
+                        <strong>LANGKAH 3:</strong> Ion diserap oleh partikel endapan → partikel bermuatan sama<br><br>
+                        <strong>LANGKAH 4:</strong> Partikel tolak-menolak → terpecah dan terdispersi menjadi koloid<br><br>
+                        <strong>HASIL:</strong> Sol koloid yang stabil dalam larutan</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh Peptisasi dalam Kehidupan:</h4>
+                        <p>• <strong>Endapan Al(OH)₃ + HCl</strong> → sol Al(OH)₃ untuk tawas<br>
+                        • <strong>Endapan Fe(OH)₃ + FeCl₃</strong> → sol Fe(OH)₃ untuk pengolahan air<br>
+                        • <strong>Endapan AgCl + NH₃</strong> → sol AgCl untuk fotografi<br>
+                        • <strong>Agar-agar + air panas</strong> → sol agar-agar untuk makanan<br>
+                        • <strong>Gelatin + air hangat</strong> → sol gelatin untuk dessert</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+
+            <!-- HOMOGENISASI -->
+            <div id="homogenisasi" class="content-section">
+                <h3 style="font-size: 2.5em; color: #8B7AB8; text-align: center; margin-bottom: 30px;">🌪️ CARA HOMOGENISASI 🌪️</h3>
+
+                <div class="method-card">
+                    <div class="method-title">Pengadukan Berkecepatan Tinggi</div>
+                    
+                    <button class="btn-animate" onclick="animateHomogenisasi()">▶️ MULAI ANIMASI PARTIKEL</button>
+
+                    <div class="visual-box">
+                        <div class="animation-stages">
+                            <div class="stage">
+                                <div class="stage-box" id="homogenisasi1">
+                                    <div style="position: absolute; top: 30%; left: 25%; width: 50px; height: 50px; background: #FFB6D9; border-radius: 20%;"></div>
+                                    <div style="position: absolute; bottom: 30%; right: 25%; width: 50px; height: 50px; background: #A8D8EA; border-radius: 20%;"></div>
+                                </div>
+                                <div class="stage-label">CAMPURAN KASAR<br>Minyak + Air</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #FF94C3;">🌪️</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="homogenisasi2">
+                                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 6em; animation: spin 1.5s linear infinite;">🌪️</div>
+                                </div>
+                                <div class="stage-label">PENGADUKAN<br>Tekanan tinggi</div>
+                            </div>
+
+                            <div style="font-size: 4em; color: #A8E6CF;">→</div>
+
+                            <div class="stage">
+                                <div class="stage-box" id="homogenisasi3"></div>
+                                <div class="stage-label">EMULSI HALUS<br>Terdispersi merata</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="note-box">
+                        <p><strong>🔬 PROSES PEMBENTUKAN PARTIKEL:</strong><br><br>
+                        <strong>LANGKAH 1:</strong> Campuran kasar - partikel besar tidak tercampur (pink & biru terpisah)<br><br>
+                        <strong>LANGKAH 2:</strong> Dilewatkan celah sempit dengan tekanan SANGAT TINGGI atau dikocok cepat<br><br>
+                        <strong>LANGKAH 3:</strong> Partikel besar terpecah menjadi sangat kecil (1-100 nm)<br><br>
+                        <strong>LANGKAH 4:</strong> Partikel koloid terdispersi merata dalam medium<br><br>
+                        <strong>HASIL:</strong> Emulsi atau sol yang sangat halus dan stabil</p>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Contoh dalam Kehidupan Sehari-hari:</h4>
+                        <p>• <strong>SUSU HOMOGEN</strong> - lemak dipecah sangat halus agar tidak mengapung<br>
+                        • <strong>MAYONES</strong> - minyak & telur dihomogenkan menjadi emulsi stabil<br>
+                        • <strong>ES KRIM</strong> - campuran susu, gula, lemak dihomogenkan<br>
+                        • <strong>SANTAN KEMASAN</strong> - santan digiling dan diaduk sangat cepat<br>
+                        • <strong>SAUS SALAD</strong> - minyak dan cuka dihomogenkan</p>
+                    </div>
+                </div>
+
+                <button class="back-btn" onclick="hideContent()">⬅️ Kembali</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Initialize particles on load
+        window.onload = function() {
+            initParticles();
+            document.getElementById('bgMusic').play();
+        }
+
+        function initParticles() {
+            // Solution - tiny particles
+            const solution = document.getElementById('solutionDemo');
+            for (let i = 0; i < 50; i++) {
+                const p = document.createElement('div');
+                p.className = 'micro-particle';
+                p.style.width = '4px';
+                p.style.height = '4px';
+                p.style.background = '#FFB6D9';
+                p.style.left = Math.random() * 210 + 'px';
+                p.style.top = Math.random() * 210 + 'px';
+                p.style.animationDelay = Math.random() * 4 + 's';
+                solution.appendChild(p);
+            }
+
+            // Colloid - medium particles
+            const colloid = document.getElementById('colloidDemo');
+            for (let i = 0; i < 18; i++) {
+                const p = document.createElement('div');
+                p.className = 'micro-particle';
+                p.style.width = '22px';
+                p.style.height = '22px';
+                p.style.background = '#A8D8EA';
+                p.style.left = Math.random() * 190 + 'px';
+                p.style.top = Math.random() * 190 + 'px';
+                p.style.animationDelay = Math.random() * 4 + 's';
+                p.style.boxShadow = '0 3px 10px rgba(168, 216, 234, 0.5)';
+                colloid.appendChild(p);
+            }
+
+            // Suspension - large particles
+            const suspension = document.getElementById('suspensionDemo');
+            for (let i = 0; i < 6; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '55px';
+                p.style.height = '55px';
+                p.style.background = '#C3B1E1';
+                p.style.borderRadius = '25%';
+                p.style.left = Math.random() * 150 + 'px';
+                p.style.top = Math.random() * 150 + 'px';
+                p.style.boxShadow = '0 5px 15px rgba(195, 177, 225, 0.5)';
+                p.style.animation = 'float 5s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 3 + 's';
+                suspension.appendChild(p);
+            }
+        }
+
+        // Modal Functions
+        function openKondensasi() {
+            document.getElementById('kondensasiModal').style.display = 'block';
+            document.getElementById('bgMusic').play();
+        }
+
+        function closeKondensasi() {
+            document.getElementById('kondensasiModal').style.display = 'none';
+            hideContent();
+        }
+
+        function openDispersi() {
+            document.getElementById('dispersiModal').style.display = 'block';
+            document.getElementById('bgMusic').play();
+        }
+
+        function closeDispersi() {
+            document.getElementById('dispersiModal').style.display = 'none';
+            hideContent();
+        }
+
+        function showContent(id) {
+            const contents = document.querySelectorAll('.content-section');
+            contents.forEach(c => c.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        function hideContent() {
+            const contents = document.querySelectorAll('.content-section');
+            contents.forEach(c => c.classList.remove('active'));
+        }
+
+        // Animation Functions
+        function animatePengendapan() {
+            const box = document.getElementById('pengendapan3');
+            box.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                const size = 8 + Math.random() * 10;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = i % 2 === 0 ? '#FFB6D9' : '#A8E6CF';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 80 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 80 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box.appendChild(p);
+            }
+
+            setTimeout(() => {
+                for (let i = 0; i < 15; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '28px';
+                    colloid.style.height = '28px';
+                    colloid.style.background = '#F5F5F5';
+                    colloid.style.border = '3px solid #DDD';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 180 + 'px';
+                    colloid.style.top = Math.random() * 180 + 'px';
+                    colloid.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    box.appendChild(colloid);
+                }
+            }, 2000);
+        }
+
+        function animateHidrolisis() {
+            const box = document.getElementById('hidrolisis3');
+            box.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                const size = 8 + Math.random() * 12;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = '#E17055';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 80 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 80 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box.appendChild(p);
+            }
+
+            setTimeout(() => {
+                for (let i = 0; i < 15; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '28px';
+                    colloid.style.height = '28px';
+                    colloid.style.background = '#E17055';
+                    colloid.style.border = '3px solid #D63031';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 180 + 'px';
+                    colloid.style.top = Math.random() * 180 + 'px';
+                    colloid.style.boxShadow = '0 4px 12px rgba(225, 112, 85, 0.4)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    box.appendChild(colloid);
+                }
+            }, 2000);
+        }
+
+        function animatePemindahan() {
+            const box = document.getElementById('pemindahan3');
+            box.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                const size = 8 + Math.random() * 10;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = '#F9CA24';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 80 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 80 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box.appendChild(p);
+            }
+
+            setTimeout(() => {
+                for (let i = 0; i < 15; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '28px';
+                    colloid.style.height = '28px';
+                    colloid.style.background = '#F9CA24';
+                    colloid.style.border = '3px solid #F39C12';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 180 + 'px';
+                    colloid.style.top = Math.random() * 180 + 'px';
+                    colloid.style.boxShadow = '0 4px 12px rgba(249, 202, 36, 0.4)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    box.appendChild(colloid);
+                }
+            }, 2000);
+        }
+
+        function animateRedoks() {
+            const box = document.getElementById('redoks3');
+            box.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                const size = 8 + Math.random() * 10;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.background = '#F9CA24';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 80 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 80 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box.appendChild(p);
+            }
+
+            setTimeout(() => {
+                for (let i = 0; i < 15; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '28px';
+                    colloid.style.height = '28px';
+                    colloid.style.background = '#F9CA24';
+                    colloid.style.border = '3px solid #F39C12';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 180 + 'px';
+                    colloid.style.top = Math.random() * 180 + 'px';
+                    colloid.style.boxShadow = '0 4px 12px rgba(249, 202, 36, 0.4)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    box.appendChild(colloid);
+                }
+            }, 2000);
+        }
+
+        function animatePengembunan() {
+            const box1 = document.getElementById('pengembunan1');
+            const box2 = document.getElementById('pengembunan2');
+            const box3 = document.getElementById('pengembunan3');
+            
+            box1.innerHTML = '';
+            box2.innerHTML = '';
+            box3.innerHTML = '';
+
+            // Box 1 - Uap panas (partikel jauh)
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '8px';
+                p.style.height = '8px';
+                p.style.background = '#FFB6D9';
+                p.style.borderRadius = '50%';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.animation = 'float 2s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box1.appendChild(p);
+            }
+
+            // Box 2 - Pendinginan (partikel mendekat)
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                p.style.width = '10px';
+                p.style.height = '10px';
+                p.style.background = '#A8D8EA';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 60 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 60 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box2.appendChild(p);
+            }
+
+            // Box 3 - Koloid (tetesan)
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '25px';
+                p.style.height = '25px';
+                p.style.background = '#A8E6CF';
+                p.style.borderRadius = '50%';
+                p.style.border = '2px solid #7ED6AE';
+                p.style.left = Math.random() * 180 + 'px';
+                p.style.top = Math.random() * 180 + 'px';
+                p.style.boxShadow = '0 4px 12px rgba(168, 230, 207, 0.4)';
+                p.style.animation = 'float 3s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box3.appendChild(p);
+            }
+        }
+
+        function animatePendinginan() {
+            const box1 = document.getElementById('pendinginan1');
+            const box2 = document.getElementById('pendinginan2');
+            const box3 = document.getElementById('pendinginan3');
+            
+            box1.innerHTML = '';
+            box2.innerHTML = '';
+            box3.innerHTML = '';
+
+            // Box 1 - Larutan panas
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '6px';
+                p.style.height = '6px';
+                p.style.background = '#FFB6D9';
+                p.style.borderRadius = '50%';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.animation = 'float 2.5s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box1.appendChild(p);
+            }
+
+            // Box 2 - Didinginkan
+            for (let i = 0; i < 25; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle-small particle-merge';
+                p.style.width = '10px';
+                p.style.height = '10px';
+                p.style.background = '#A8D8EA';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 70 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 70 + 'px');
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box2.appendChild(p);
+            }
+
+            // Box 3 - Sol koloid
+            for (let i = 0; i < 18; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '24px';
+                p.style.height = '24px';
+                p.style.background = '#C3B1E1';
+                p.style.borderRadius = '50%';
+                p.style.border = '2px solid #9D84B7';
+                p.style.left = Math.random() * 180 + 'px';
+                p.style.top = Math.random() * 180 + 'px';
+                p.style.boxShadow = '0 4px 12px rgba(195, 177, 225, 0.4)';
+                p.style.animation = 'float 3s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box3.appendChild(p);
+            }
+        }
+
+        function animatePenggantian() {
+            const box1 = document.getElementById('penggantian1');
+            const box2 = document.getElementById('penggantian2');
+            const box3 = document.getElementById('penggantian3');
+            
+            box1.innerHTML = '';
+            box2.innerHTML = '';
+            box3.innerHTML = '';
+
+            // Box 1 - Larutan dalam pelarut A
+            for (let i = 0; i < 15; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '12px';
+                p.style.height = '12px';
+                p.style.background = '#FFB6D9';
+                p.style.borderRadius = '50%';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.animation = 'float 3s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box1.appendChild(p);
+            }
+
+            // Box 2 - Pelarut B (air)
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '8px';
+                p.style.height = '8px';
+                p.style.background = '#4ECDC4';
+                p.style.borderRadius = '50%';
+                p.style.left = Math.random() * 200 + 'px';
+                p.style.top = Math.random() * 200 + 'px';
+                p.style.animation = 'float 2.5s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box2.appendChild(p);
+            }
+
+            // Box 3 - Sol koloid
+            for (let i = 0; i < 20; i++) {
+                const p = document.createElement('div');
+                p.style.position = 'absolute';
+                p.style.width = '22px';
+                p.style.height = '22px';
+                p.style.background = i % 2 === 0 ? '#FFB6D9' : '#A8D8EA';
+                p.style.borderRadius = '50%';
+                p.style.left = Math.random() * 180 + 'px';
+                p.style.top = Math.random() * 180 + 'px';
+                p.style.boxShadow = '0 3px 10px rgba(0, 0, 0, 0.2)';
+                p.style.animation = 'float 3s infinite ease-in-out';
+                p.style.animationDelay = Math.random() * 2 + 's';
+                box3.appendChild(p);
+            }
+        }
+
+        function animateBredig() {
+            const box2 = document.getElementById('bredig2');
+            const box3 = document.getElementById('bredig3');
+            
+            box2.innerHTML = '';
+            box3.innerHTML = '';
+
+            // Elektroda di box2
+            const e1 = document.createElement('div');
+            e1.style.cssText = 'position: absolute; top: 15%; left: 25%; width: 12px; height: 150px; background: linear-gradient(180deg, #FFD700, #FFA500); border-radius: 6px;';
+            box2.appendChild(e1);
+            
+            const e2 = document.createElement('div');
+            e2.style.cssText = 'position: absolute; top: 15%; right: 25%; width: 12px; height: 150px; background: linear-gradient(180deg, #FFD700, #FFA500); border-radius: 6px;';
+            box2.appendChild(e2);
+
+            // Petir
+            const lightning = document.createElement('div');
+            lightning.innerHTML = '⚡';
+            lightning.style.cssText = 'position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%); font-size: 5em; animation: flash 0.6s infinite;';
+            box2.appendChild(lightning);
+
+            // Uap logam
+            setTimeout(() => {
+                for (let i = 0; i < 30; i++) {
+                    const vapor = document.createElement('div');
+                    vapor.style.cssText = `position: absolute; width: 8px; height: 8px; background: #FFD700; border-radius: 50%; left: ${110 + Math.random() * 10}px; top: ${140 + i * 3}px; opacity: 0; animation: rise ${2 + Math.random()}s ease-out forwards;`;
+                    vapor.style.animationDelay = (i * 0.05) + 's';
+                    box2.appendChild(vapor);
+                }
+            }, 300);
+
+            // Sol logam di box3
+            setTimeout(() => {
+                box3.style.background = 'linear-gradient(135deg, #FFF9C4, #FFEAA7)';
+                for (let i = 0; i < 22; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '24px';
+                    colloid.style.height = '24px';
+                    colloid.style.background = '#F39C12';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.border = '2px solid #E67E22';
+                    colloid.style.left = Math.random() * 180 + 'px';
+                    colloid.style.top = Math.random() * 180 + 'px';
+                    colloid.style.boxShadow = '0 4px 12px rgba(243, 156, 18, 0.5)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    colloid.style.animationDelay = Math.random() * 2 + 's';
+                    box3.appendChild(colloid);
+                }
+            }, 1800);
+        }
+
+        function animateMekanik() {
+            const box3 = document.getElementById('mekanik3');
+            box3.innerHTML = '';
+
+            // Partikel besar yang pecah
+            const large = document.createElement('div');
+            large.className = 'particle-break';
+            large.style.width = '85px';
+            large.style.height = '85px';
+            large.style.background = '#C3B1E1';
+            large.style.borderRadius = '20%';
+            large.style.left = '65px';
+            large.style.top = '65px';
+            box3.appendChild(large);
+
+            // Fragmen yang beterbangan
+            setTimeout(() => {
+                for (let i = 0; i < 35; i++) {
+                    const fragment = document.createElement('div');
+                    fragment.className = 'fragment';
+                    fragment.style.background = '#A8D8EA';
+                    fragment.style.left = '110px';
+                    fragment.style.top = '110px';
+                    fragment.style.setProperty('--fx', (Math.random() - 0.5) * 180 + 'px');
+                    fragment.style.setProperty('--fy', (Math.random() - 0.5) * 180 + 'px');
+                    fragment.style.animationDelay = (i * 0.04) + 's';
+                    box3.appendChild(fragment);
+                }
+            }, 400);
+
+            // Partikel koloid akhir
+            setTimeout(() => {
+                box3.innerHTML = '';
+                for (let i = 0; i < 28; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '18px';
+                    colloid.style.height = '18px';
+                    colloid.style.background = '#A8D8EA';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.border = '2px solid #7FC8E8';
+                    colloid.style.left = Math.random() * 190 + 'px';
+                    colloid.style.top = Math.random() * 190 + 'px';
+                    colloid.style.boxShadow = '0 3px 10px rgba(168, 216, 234, 0.4)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    colloid.style.animationDelay = Math.random() * 2 + 's';
+                    box3.appendChild(colloid);
+                }
+            }, 2200);
+        }
+
+        function animatePeptisasi() {
+            const box3 = document.getElementById('peptisasi3');
+            box3.innerHTML = '';
+
+            // Endapan besar
+            const precipitate = document.createElement('div');
+            precipitate.style.cssText = 'position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 110px; height: 75px; background: #C3B1E1; border-radius: 15px; animation: breakMotion 3.5s ease-out forwards;';
+            box3.appendChild(precipitate);
+
+            // Ion menyerang
+            setTimeout(() => {
+                for (let i = 0; i < 20; i++) {
+                    const ion = document.createElement('div');
+                    ion.style.cssText = `position: absolute; width: 12px; height: 12px; background: ${i % 2 === 0 ? '#FF6B9D' : '#A8E6CF'}; border-radius: 50%; left: ${Math.random() * 200}px; top: ${Math.random() * 100}px;`;
+                    ion.style.animation = 'attack 2s ease-in forwards';
+                    box3.appendChild(ion);
+                }
+            }, 500);
+
+            // Partikel koloid terdispersi
+            setTimeout(() => {
+                box3.innerHTML = '';
+                for (let i = 0; i < 25; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '20px';
+                    colloid.style.height = '20px';
+                    colloid.style.background = '#A8D8EA';
+                    colloid.style.border = '2px solid #7FC8E8';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 190 + 'px';
+                    colloid.style.top = Math.random() * 190 + 'px';
+                    colloid.style.boxShadow = '0 3px 10px rgba(168, 216, 234, 0.4)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    colloid.style.animationDelay = Math.random() * 2 + 's';
+                    box3.appendChild(colloid);
+                }
+            }, 3000);
+        }
+
+        function animateHomogenisasi() {
+            const box3 = document.getElementById('homogenisasi3');
+            box3.innerHTML = '';
+
+            // Partikel besar awal
+            for (let i = 0; i < 6; i++) {
+                const large = document.createElement('div');
+                large.style.position = 'absolute';
+                large.style.width = '45px';
+                large.style.height = '45px';
+                large.style.background = i % 2 === 0 ? '#FFB6D9' : '#A8D8EA';
+                large.style.borderRadius = '20%';
+                large.style.left = Math.random() * 160 + 'px';
+                large.style.top = Math.random() * 160 + 'px';
+                large.style.animation = 'breakMotion 3s ease-out forwards';
+                large.style.animationDelay = (i * 0.2) + 's';
+                box3.appendChild(large);
+            }
+
+            // Partikel koloid halus
+            setTimeout(() => {
+                box3.innerHTML = '';
+                for (let i = 0; i < 30; i++) {
+                    const colloid = document.createElement('div');
+                    colloid.style.position = 'absolute';
+                    colloid.style.width = '16px';
+                    colloid.style.height = '16px';
+                    colloid.style.background = i % 2 === 0 ? '#FFB6D9' : '#A8D8EA';
+                    colloid.style.borderRadius = '50%';
+                    colloid.style.left = Math.random() * 195 + 'px';
+                    colloid.style.top = Math.random() * 195 + 'px';
+                    colloid.style.boxShadow = '0 3px 8px rgba(0, 0, 0, 0.2)';
+                    colloid.style.animation = 'float 3s infinite ease-in-out';
+                    colloid.style.animationDelay = Math.random() * 2 + 's';
+                    box3.appendChild(colloid);
+                }
+            }, 2500);
+        }
+
+        // Additional keyframes
+        const additionalStyles = document.createElement('style');
+        additionalStyles.textContent = `
+            @keyframes rise {
+                from { transform: translateY(0); opacity: 0; }
+                50% { opacity: 1; }
+                to { transform: translateY(-120px); opacity: 0; }
+            }
+            @keyframes attack {
+                from { transform: translate(0, 0); opacity: 1; }
+                to { transform: translate(${Math.random() * 40 - 20}px, 120px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(additionalStyles);
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                hideContent();
+            }
+        }
+    </script>
+</body>
+</html>

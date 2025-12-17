@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 1: Sistem Koloid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hero-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .colloid-example {
+            text-align: center;
+            margin: 20px;
+            transition: transform 0.3s;
+        }
+
+        .colloid-example:hover {
+            transform: scale(1.1);
+        }
+
+        .colloid-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            margin: 0 auto 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .milk { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .cloud { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .jelly { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .menu-button {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .menu-button:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .menu-button h2 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .menu-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .objectives-list {
+            margin: 20px 0;
+        }
+
+        .objective-item {
+            background: linear-gradient(135deg, #f093fb20 0%, #f5576c20 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            transition: transform 0.3s;
+        }
+
+        .objective-item:hover {
+            transform: translateX(10px);
+        }
+
+        .objective-item strong {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f0f0f0;
+        }
+
+        .particle-visualization {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .particle-box {
+            width: 250px;
+            height: 200px;
+            border: 3px solid #667eea;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            margin: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0ff 100%);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: move 4s infinite;
+        }
+
+        .solution-particle {
+            width: 5px;
+            height: 5px;
+            background: #667eea;
+        }
+
+        .colloid-particle {
+            width: 15px;
+            height: 15px;
+            background: #f5576c;
+        }
+
+        .suspension-particle {
+            width: 30px;
+            height: 30px;
+            background: #43e97b;
+        }
+
+        @keyframes move {
+            0%, 100% { 
+                transform: translate(0, 0);
+            }
+            25% { 
+                transform: translate(100px, 50px);
+            }
+            50% { 
+                transform: translate(200px, 100px);
+            }
+            75% { 
+                transform: translate(100px, 150px);
+            }
+        }
+
+        .back-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-size: 30px;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+        }
+
+        .visualization-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .visualization-title {
+            font-size: 1.3em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧪 MODUL 1: SISTEM KOLOID</h1>
+            <p style="color: #666; font-size: 1.2em; margin-top: 10px;">Pembelajaran Kimia Interaktif</p>
+        </header>
+<button class="back-button" onclick="location.href='landing page koloid.html'">
+    🏠 Kembali ke Beranda
+</button>
+        <div class="hero-section" id="mainSection">
+            <h2 style="color: #667eea; margin-bottom: 20px;">Sistem Koloid dalam Kehidupan Sehari-hari</h2>
+            <p style="font-size: 1.1em; color: #666; margin-bottom: 20px;">
+                Tahukah kamu? Susu yang kamu minum, awan di langit, dan agar-agar kesukaanmu adalah contoh sistem koloid!
+            </p>
+            
+            <div class="hero-visual">
+                <div class="colloid-example">
+                    <div class="colloid-icon milk">🥛</div>
+                    <p><strong>Susu</strong><br>Emulsi Cair</p>
+                </div>
+                <div class="colloid-example">
+                    <div class="colloid-icon cloud">☁️</div>
+                    <p><strong>Awan</strong><br>Aerosol Cair</p>
+                </div>
+                <div class="colloid-example">
+                    <div class="colloid-icon jelly">🍮</div>
+                    <p><strong>Agar-agar</strong><br>Gel</p>
+                </div>
+            </div>
+
+            <div class="menu-container">
+                <div class="menu-button" onclick="showSection('objectives')">
+                    <div class="menu-icon">🎯</div>
+                    <h2>Tujuan Pembelajaran</h2>
+                    <p>Capaian pembelajaran modul ini</p>
+                </div>
+
+                <div class="menu-button" onclick="showSection('definition')">
+                    <div class="menu-icon">📚</div>
+                    <h2>Pengertian Sistem Koloid</h2>
+                    <p>Pelajari konsep dasar koloid</p>
+                </div>
+
+                <div class="menu-button" onclick="showSection('comparison')">
+                    <div class="menu-icon">⚖️</div>
+                    <h2>Perbandingan Larutan, Suspensi & Koloid</h2>
+                    <p>Lihat perbedaan karakteristiknya</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 1: Tujuan Pembelajaran -->
+        <div class="content-section" id="objectives">
+            <h2 style="color: #667eea; margin-bottom: 30px; text-align: center;">🎯 Tujuan Pembelajaran</h2>
+            
+            <div class="objectives-list">
+                <div class="objective-item">
+                    <strong>🧠 Remember (Mengingat)</strong>
+                    <p>Mengidentifikasi jenis-jenis koloid, sifat-sifat koloid, dan pembuatan koloid</p>
+                </div>
+
+                <div class="objective-item">
+                    <strong>💡 Understand (Memahami)</strong>
+                    <p>Menjelaskan perbedaan jenis koloid secara konseptual</p>
+                </div>
+
+                <div class="objective-item">
+                    <strong>🔧 Apply (Menerapkan)</strong>
+                    <p>Mengelompokkan berbagai tipe sistem koloid, dan menjelaskan kegunaan koloid dalam kehidupan berdasarkan sifat-sifatnya</p>
+                </div>
+
+                <div class="objective-item">
+                    <strong>🔍 Analyze (Menganalisis)</strong>
+                    <p>Menganalisis jenis-jenis koloid berdasarkan fase terdispersi dan medium pendispersinya, serta memberikan contoh masing-masing jenis koloid dalam kehidupan sehari-hari (misalnya, sol, emulsi, busa)</p>
+                </div>
+
+                <div class="objective-item">
+                    <strong>⚖️ Evaluate (Mengevaluasi)</strong>
+                    <p>Mengevaluasi perbedaan sifat-sifat koloid tersebut dengan sifat-sifat larutan sejati dan suspensi</p>
+                </div>
+            </div>
+
+            <button class="back-button" onclick="showSection('main')">← Kembali ke Menu Utama</button>
+        </div>
+
+        <!-- SECTION 2: Pengertian Sistem Koloid -->
+        <div class="content-section" id="definition">
+            <h2 style="color: #667eea; margin-bottom: 30px; text-align: center;">📚 Pengertian Sistem Koloid</h2>
+            
+            <div style="background: linear-gradient(135deg, #f093fb20 0%, #f5576c20 100%); padding: 25px; border-radius: 15px; margin-bottom: 30px;">
+                <p style="font-size: 1.2em; line-height: 1.8; text-align: justify;">
+                    <strong style="color: #667eea;">Sistem koloid</strong> adalah suatu campuran heterogen yang terdiri dari dua fase, yaitu <strong>fase terdispersi</strong> (zat yang tersebar) dan <strong>medium pendispersi</strong> (zat yang menyebarkan). Ukuran partikel koloid berkisar antara <strong>1 - 100 nanometer</strong>, lebih besar dari larutan sejati tetapi lebih kecil dari suspensi.
+                </p>
+            </div>
+
+            <div class="visualization-container">
+                <h3 class="visualization-title">Visualisasi Ukuran Partikel</h3>
+                <div style="display: flex; justify-content: center; align-items: center; gap: 30px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="width: 80px; height: 80px; background: #667eea; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 0 auto 10px;">
+                            &lt;1 nm
+                        </div>
+                        <p><strong>Larutan</strong></p>
+                    </div>
+                    <div style="font-size: 2em; color: #667eea;">→</div>
+                    <div style="text-align: center;">
+                        <div style="width: 120px; height: 120px; background: #f5576c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 0 auto 10px;">
+                            1-100 nm
+                        </div>
+                        <p><strong>Koloid</strong></p>
+                    </div>
+                    <div style="font-size: 2em; color: #667eea;">→</div>
+                    <div style="text-align: center;">
+                        <div style="width: 160px; height: 160px; background: #43e97b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; margin: 0 auto 10px;">
+                            &gt;100 nm
+                        </div>
+                        <p><strong>Suspensi</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h3 style="color: #667eea; margin-bottom: 20px;">Karakteristik Sistem Koloid:</h3>
+                <ul style="line-height: 2; font-size: 1.1em;">
+                    <li>✓ Tidak dapat disaring dengan kertas saring biasa</li>
+                    <li>✓ Dapat menghamburkan cahaya (efek Tyndall)</li>
+                    <li>✓ Secara visual tampak homogen</li>
+                    <li>✓ Stabil dan tidak mengendap dalam waktu lama</li>
+                    <li>✓ Dapat mengalami gerak Brown</li>
+                </ul>
+            </div>
+
+            <button class="back-button" onclick="showSection('main')">← Kembali ke Menu Utama</button>
+        </div>
+
+        <!-- SECTION 3: Perbandingan -->
+        <div class="content-section" id="comparison">
+            <h2 style="color: #667eea; margin-bottom: 30px; text-align: center;">⚖️ Perbandingan Larutan, Suspensi & Koloid</h2>
+            
+            <div class="visualization-container">
+                <h3 class="visualization-title">Visualisasi Pergerakan Partikel</h3>
+                <div class="particle-visualization">
+                    <div>
+                        <p style="text-align: center; font-weight: bold; color: #667eea; margin-bottom: 10px;">Larutan Sejati</p>
+                        <div class="particle-box" id="solutionBox">
+                            <div class="particle solution-particle" style="top: 20%; left: 30%;"></div>
+                            <div class="particle solution-particle" style="top: 50%; left: 60%; animation-delay: 0.5s;"></div>
+                            <div class="particle solution-particle" style="top: 70%; left: 20%; animation-delay: 1s;"></div>
+                            <div class="particle solution-particle" style="top: 40%; left: 80%; animation-delay: 1.5s;"></div>
+                            <div class="particle solution-particle" style="top: 60%; left: 40%; animation-delay: 2s;"></div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.9em; margin-top: 10px;">Partikel sangat kecil (&lt;1 nm)</p>
+                    </div>
+
+                    <div>
+                        <p style="text-align: center; font-weight: bold; color: #f5576c; margin-bottom: 10px;">Koloid</p>
+                        <div class="particle-box" id="colloidBox">
+                            <div class="particle colloid-particle" style="top: 25%; left: 35%;"></div>
+                            <div class="particle colloid-particle" style="top: 55%; left: 65%; animation-delay: 0.5s;"></div>
+                            <div class="particle colloid-particle" style="top: 75%; left: 25%; animation-delay: 1s;"></div>
+                            <div class="particle colloid-particle" style="top: 45%; left: 75%; animation-delay: 1.5s;"></div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.9em; margin-top: 10px;">Partikel sedang (1-100 nm)</p>
+                    </div>
+
+                    <div>
+                        <p style="text-align: center; font-weight: bold; color: #43e97b; margin-bottom: 10px;">Suspensi</p>
+                        <div class="particle-box" id="suspensionBox">
+                            <div class="particle suspension-particle" style="top: 30%; left: 40%;"></div>
+                            <div class="particle suspension-particle" style="top: 60%; left: 70%; animation-delay: 0.5s;"></div>
+                            <div class="particle suspension-particle" style="top: 80%; left: 30%; animation-delay: 1s;"></div>
+                        </div>
+                        <p style="text-align: center; font-size: 0.9em; margin-top: 10px;">Partikel besar (&gt;100 nm)</p>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sifat</th>
+                        <th>Larutan Sejati</th>
+                        <th>Koloid</th>
+                        <th>Suspensi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ukuran Partikel</strong></td>
+                        <td>&lt; 1 nm</td>
+                        <td>1 - 100 nm</td>
+                        <td>&gt; 100 nm</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Homogenitas</strong></td>
+                        <td>Homogen (1 fase)</td>
+                        <td>Heterogen (2 fase) tapi tampak homogen</td>
+                        <td>Heterogen (2 fase) terlihat</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Penyaringan</strong></td>
+                        <td>Tidak dapat disaring</td>
+                        <td>Tidak dapat disaring dengan kertas saring biasa</td>
+                        <td>Dapat disaring</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Efek Tyndall</strong></td>
+                        <td>Tidak ada</td>
+                        <td>Ada (menghamburkan cahaya)</td>
+                        <td>Ada (tapi mengendap)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gerak Brown</strong></td>
+                        <td>Tidak ada</td>
+                        <td>Ada</td>
+                        <td>Tidak ada</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pengendapan</strong></td>
+                        <td>Tidak mengendap</td>
+                        <td>Tidak mengendap</td>
+                        <td>Mengendap</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Contoh</strong></td>
+                        <td>Air garam, air gula, larutan cuka</td>
+                        <td>Susu, awan, agar-agar, mentega</td>
+                        <td>Air keruh, pasir dalam air, kapur dalam air</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button class="back-button" onclick="showSection('main')">← Kembali ke Menu Utama</button>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" onclick="toggleMusic()" id="musicBtn">
+        🎵
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_4a82dd2d36.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let musicPlaying = false;
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            if (sectionId === 'main') {
+                document.getElementById('mainSection').style.display = 'block';
+            } else {
+                document.getElementById('mainSection').style.display = 'none';
+                document.getElementById(sectionId).classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMusic() {
+            if (musicPlaying) {
+                music.pause();
+                musicBtn.textContent = '🎵';
+                musicPlaying = false;
+            } else {
+                music.play();
+                musicBtn.textContent = '🔊';
+                musicPlaying = true;
+            }
+        }
+
+        // Auto-play music dengan user interaction
+        document.addEventListener('click', function initAudio() {
+            if (!musicPlaying) {
+                music.play();
+                musicBtn.textContent = '🔊';
+                musicPlaying = true;
+            }
+            document.removeEventListener('click', initAudio);
+        }, { once: true });
+    </script>
+</body>
+</html>
